@@ -1,0 +1,16 @@
+# Configuration file for Jira CSV import
+
+# Define the project key
+project:
+  key: "POSEC"  # Replace with your Jira project key
+
+# Map CSV columns to Jira fields
+mappings:
+  "Issue Name": "Summary"  # CSV column name: Jira field name
+  "General Description": "Description"
+
+# Specify default values for any fields that are not in the CSV file
+defaults:
+  "issuetype": "Task"  # Default issue type if not specified in CSV
+  "priority": "Critical"  # Default priority if not specified in CSV
+  "reporter": "Avihay Levi"  # Default reporter if not specified in CSV
