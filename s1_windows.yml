@@ -1,0 +1,22 @@
+---
+- name: Check SentinelOne Agent Installation on Windows systems
+  hosts: your_windows_server_group
+  gather_facts: false  # Disable fact gathering on Windows hosts
+  vars:
+    missing_sentinelone_hosts: []  # Initialize an empty list to store missing hosts
+
+  tasks:
+    - name: Check if SentinelOne agent is installed
+      win_shell: Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -like "*SentinelOne*" }
+      register: sentinelone_status
+      ignore_errors: true
+
+    - name: Add hostname to list if SentinelOne is not installed
+      when: sentinelone_status.rc -ne 0
+      set_fact:
+        missing_sentinelone_hosts: "{{ missing_sentinelone_hosts + [inventory_hostname] }}"
+
+  post_tasks:
+    - name: Display list of missing hosts
+      debug:
+        var: missing_sentinelone_hosts
